@@ -42,7 +42,8 @@
 
 /* Private variables ---------------------------------------------------------*/
 /* USER CODE BEGIN PV */
-
+int k;
+struct keys_struct keys;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -57,12 +58,10 @@
 
 /* External variables --------------------------------------------------------*/
 extern UART_HandleTypeDef huart2;
-
+/* USER CODE BEGIN EV */
 extern uint8_t rx_array[];
 extern uint8_t rx_flag;
 extern esc_settings esc_struct;
-/* USER CODE BEGIN EV */
-
 /* USER CODE END EV */
 
 /******************************************************************************/
@@ -186,7 +185,20 @@ void PendSV_Handler(void)
 void SysTick_Handler(void)
 {
   /* USER CODE BEGIN SysTick_IRQn 0 */
+	k++;
 
+	if (k == 10) {
+
+			keys.button1 = HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_14);
+			keys.button2 = HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_15);
+			keys.button3 = HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_8);
+			keys.button4 = HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_9);
+
+			keys.sensor1 = HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_13);
+			keys.sensor2 = HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_12);
+
+			k = 0;
+	}
   /* USER CODE END SysTick_IRQn 0 */
   HAL_IncTick();
   /* USER CODE BEGIN SysTick_IRQn 1 */
@@ -251,13 +263,13 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart) {
 			break;
 		case (CONFIG_REQUEST_TYPE): {
 			rx_flag = 2;
-			//HAL_UART_Receive_DMA(&huart1, rx_array + 2,
-			//	CONFIG_REQUEST_LENGTH - 2);
+			HAL_UART_Receive_IT(&huart2, rx_array + 2,
+				CONFIG_REQUEST_LENGTH - 2);
 		}
 			break;
 		default: {
 			rx_flag = 0;
-			//HAL_UART_Receive_DMA(&huart2, rx_array, 1);
+			HAL_UART_Receive_IT(&huart2, rx_array, 1);
 		}
 			break;
 		};

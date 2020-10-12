@@ -5,7 +5,7 @@
 #include "main.h"
 
 uint8_t tx_array[NORMAL_RESPONSE_LENGTH] = {0};
-extern uint8_t b_state;
+extern struct keys_struct keys;
 
 bool parse_normal_package(esc_settings *esc_struct,  uint8_t  *message)
 {
@@ -34,7 +34,9 @@ void normal_response(UART_HandleTypeDef *huart, esc_settings *esc_struct)
 	resp.state         = 0x55;
 	resp.current       = 0x55;
 	resp.speed_period  = 0x55;
-	resp.button_state  = b_state;
+
+
+	memcpy(&resp.button_state, &keys, 1);
 
 	memcpy((void*)tx_array,  (void*)&resp,  NORMAL_RESPONSE_LENGTH - 1);
 
@@ -46,7 +48,7 @@ void normal_response(UART_HandleTypeDef *huart, esc_settings *esc_struct)
 
     //HAL_UART_Transmit_DMA(huart, tx_array, NORMAL_RESPONSE_LENGTH);
 
-    HAL_GPIO_TogglePin(GPIOC, GPIO_PIN_13);
+    HAL_GPIO_TogglePin(DEBUG_LED_GPIO_Port, DEBUG_LED_Pin);
 }
 
 bool parse_config_package(esc_settings *esc_struct,  uint8_t  *message)
