@@ -26,8 +26,7 @@
 #pragma pack(push, 1)
 
 /* STM send requests and VMA send responses */
-struct Request
-{
+struct Request {
 	uint8_t AA;
 	uint8_t type; // 0x01
 	uint8_t address;
@@ -35,8 +34,7 @@ struct Request
 	uint8_t crc;
 };
 
-struct Response
-{
+struct Response {
 	uint8_t AA;
 	uint8_t type;  // 0x01
 	uint8_t address;
@@ -47,8 +45,7 @@ struct Response
 	uint8_t crc;
 };
 
-struct TerminalRequest
-{
+struct TerminalRequest {
 	uint8_t AA;
 	uint8_t type; // 0x02
 	uint8_t address;
@@ -63,8 +60,7 @@ struct TerminalRequest
 	uint8_t crc;
 };
 
-struct TerminalResponse
-{
+struct TerminalResponse {
 	uint8_t AA;
 	uint8_t type;  // 0x02
 	uint8_t address;
@@ -78,8 +74,7 @@ struct TerminalResponse
 	uint8_t crc;
 };
 
-struct ConfigRequest
-{
+struct ConfigRequest {
 	uint8_t AA;
 	uint8_t type; // 0x03
 	uint8_t update_firmware; // (bool) go to bootloader and update firmware

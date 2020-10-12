@@ -14,8 +14,17 @@
 
 typedef struct {
 	uint8_t device_adress;
-    int8_t  PWM_duty;
+	int8_t PWM_duty;
 } esc_settings;
+struct keys_struct {
+	unsigned int button1 :1;
+	unsigned int button2 :1;
+	unsigned int button3 :1;
+	unsigned int button4 :1;
+	unsigned int sensor1 :1;
+	unsigned int sensor2 :1;
+	unsigned int even :2;
+};
 
 void update_esc_settings(esc_settings *esc_struct);
 
